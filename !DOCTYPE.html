@@ -1,0 +1,832 @@
+<!DOCTYPE html>
+<html lang="ko">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>PPP</title>
+        <script src="https://cdn.tailwindcss.com"></script>
+        <link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Noto+Sans+KR:wght@400;500;700;900&family=Kanit:ital,wght@0,800;1,900&family=Teko:wght@600&display=swap" rel="stylesheet" />
+        <script>
+            tailwind.config = {
+                theme: {
+                    extend: {
+                        fontFamily: {
+                            sans: ["Noto Sans KR", "sans-serif"],
+                            display: ["Black Han Sans", "sans-serif"],
+                            eng: ["Kanit", "sans-serif"],
+                            mono: ["Teko", "sans-serif"],
+                        },
+                        colors: {
+                            "zzz-lime": "#d946ef",
+                            "zzz-black": "#0a0a0a",
+                            "zzz-dark": "#111111",
+                            "zzz-gray": "#2a2a2a",
+                            "zzz-red": "#ff003c",
+                            "zzz-blue": "#00f0ff",
+                        },
+                        backgroundImage: {
+                            "stripe-pattern": "repeating-linear-gradient(45deg, #000, #000 10px, #1a1a1a 10px, #1a1a1a 20px)",
+                            "grid-pattern": "linear-gradient(to right, #222 1px, transparent 1px), linear-gradient(to bottom, #222 1px, transparent 1px)",
+                        },
+                        animation: {
+                            "slide-in": "slideIn 0.3s ease-out forwards",
+                            "pulse-slow": "pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite",
+                        },
+                        keyframes: {
+                            slideIn: {
+                                "0%": { transform: "translateX(100%)", opacity: "0" },
+                                "100%": { transform: "translateX(0)", opacity: "1" },
+                            },
+                        },
+                    },
+                },
+            };
+        </script>
+        <style>
+            /* 커스텀 스크롤바 */
+            ::-webkit-scrollbar {
+                width: 8px;
+                height: 8px;
+            }
+            ::-webkit-scrollbar-track {
+                background: #000;
+            }
+            ::-webkit-scrollbar-thumb {
+                background: #d946ef;
+                border-radius: 0;
+            }
+            ::-webkit-scrollbar-thumb:hover {
+                background: #fff;
+            }
+
+            .text-outline {
+                -webkit-text-stroke: 1px black;
+            }
+            .text-outline-w {
+                -webkit-text-stroke: 1px rgba(255, 255, 255, 0.2);
+            }
+
+            /* 유틸리티 */
+            .skew-box {
+                transform: skewX(-12deg);
+            }
+            .un-skew {
+                transform: skewX(12deg);
+            }
+            .no-scrollbar::-webkit-scrollbar {
+                display: none;
+            }
+            .no-scrollbar {
+                -ms-overflow-style: none;
+                scrollbar-width: none;
+            }
+        </style>
+    </head>
+    <body class="bg-zzz-black text-white font-sans antialiased overflow-hidden selection:bg-zzz-lime selection:text-black">
+        
+        <div class="relative w-full h-screen overflow-hidden flex" id="main-interface">
+            
+            <div class="hidden md:block w-5/12 h-full relative border-r-4 border-black z-10">
+                <img src="https://placehold.co/800x1200/111/d946ef?text=DONG-BAEK-LIM+CITY" class="absolute inset-0 w-full h-full object-cover opacity-60 mix-blend-luminosity" />
+                <div class="absolute inset-0 bg-gradient-to-t from-zzz-black via-transparent to-black/60"></div>
+                <div class="absolute bottom-10 left-10">
+                    <h1 class="text-8xl font-eng font-black italic text-zzz-lime leading-[0.85] drop-shadow-[4px_4px_0_#000]">
+                        PHANTOM<br />PHASE<br />PROTOCOL
+                    </h1>
+                    <p class="mt-4 bg-black text-white inline-block px-4 py-2 font-bold text-lg border-l-4 border-zzz-red">
+                        WARNING: HIGH CORRUPTION DETECTED
+                    </p>
+                </div>
+            </div>
+
+            <div class="w-full md:w-7/12 h-full bg-zinc-900 bg-stripe-pattern relative flex flex-col">
+                
+                <div class="sticky top-0 z-20 bg-zzz-black/90 backdrop-blur-md border-b-2 border-zinc-700 p-4 flex justify-between items-center">
+                    <div class="font-eng font-black text-2xl text-white italic">DBL <span class="text-zzz-lime">ARCHIVE</span></div>
+                    <div class="flex gap-2">
+                        <div class="h-2 w-2 bg-zzz-red rounded-full animate-pulse"></div>
+                        <span class="text-xs font-mono text-zzz-lime">SERVER: ONLINE</span>
+                    </div>
+                </div>
+
+                <div class="flex-1 overflow-y-auto p-6 md:p-10 pb-40 scroll-smooth" id="scroll-content">
+                    
+                    <section class="mb-24 relative group">
+                        <div class="flex items-baseline gap-4 mb-8 border-b-4 border-white pb-2 pl-4 md:pl-0">
+                            <span class="text-6xl font-black text-zzz-lime opacity-20 absolute -z-10 -mt-8 ml-2 select-none">01</span>
+                            <h2 class="text-4xl font-black font-eng italic transform -skew-x-6">FILE 01. <span class="text-white">WORLDVIEW</span></h2>
+                        </div>
+
+                        <div class="relative w-full">
+                            <button onclick="scrollSlider(-1)" class="hidden md:flex absolute -left-6 top-1/2 -translate-y-1/2 z-20 w-10 h-20 bg-black/80 border border-zinc-700 hover:bg-zzz-lime hover:text-black hover:border-black items-center justify-center transition-colors group/btn">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="3" stroke="currentColor" class="w-6 h-6 group-hover/btn:scale-125 transition-transform">
+                                    <path stroke-linecap="square" stroke-linejoin="miter" d="M15 19l-7-7 7-7" />
+                                </svg>
+                            </button>
+                            <button onclick="scrollSlider(1)" class="hidden md:flex absolute -right-6 top-1/2 -translate-y-1/2 z-20 w-10 h-20 bg-black/80 border border-zinc-700 hover:bg-zzz-lime hover:text-black hover:border-black items-center justify-center transition-colors group/btn">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="3" stroke="currentColor" class="w-6 h-6 group-hover/btn:scale-125 transition-transform">
+                                    <path stroke-linecap="square" stroke-linejoin="miter" d="M9 5l7 7-7 7" />
+                                </svg>
+                            </button>
+
+                            <div id="worldview-slider" class="flex overflow-x-auto snap-x snap-mandatory scroll-smooth gap-6 pb-8 no-scrollbar px-4 md:px-0">
+                                <div class="min-w-[85vw] md:min-w-[320px] lg:min-w-[380px] h-[500px] bg-black border-2 border-zinc-800 relative flex flex-col snap-center group hover:border-zzz-lime transition-colors duration-300 overflow-hidden shrink-0">
+                                    <div class="absolute top-4 right-4 text-zinc-800 font-black text-6xl opacity-50 z-0">01</div>
+                                    <div class="h-[55%] w-full relative overflow-hidden bg-zinc-900">
+                                        <img src="https://placehold.co/600x800/111/333?text=Simye+Visual" class="w-full h-full object-cover opacity-60 grayscale group-hover:grayscale-0 group-hover:opacity-100 group-hover:scale-110 transition-all duration-500" />
+                                        <div class="absolute bottom-0 left-0 w-full h-12 bg-black" style="clip-path: polygon(0 100%, 100% 100%, 100% 0)"></div>
+                                        <div class="absolute bottom-0 left-0 w-full h-2 bg-zzz-lime transform translate-y-full group-hover:translate-y-0 transition-transform duration-300 delay-100 origin-bottom-right -rotate-3"></div>
+                                    </div>
+                                    <div class="flex-1 p-6 relative z-10 flex flex-col">
+                                        <div class="mb-auto">
+                                            <h3 class="text-4xl font-black font-eng italic text-white leading-none mb-1">SIMYE</h3>
+                                            <p class="text-zzz-lime font-bold text-sm tracking-widest mb-4">심예 (深穢)</p>
+                                            <p class="text-gray-400 text-sm leading-relaxed border-t border-zinc-700 pt-4">현실 공간에 저승의 데이터가 오버라이트되는 일종의 버그 현상. 4가지의 단계로 생성되며, 생김새는 현실의 심령스팟과 닮아있습니다.</p>
+                                        </div>
+                                        <div class="flex items-center gap-2 mt-4 opacity-50 group-hover:opacity-100 transition-opacity">
+                                            <div class="h-1 w-full bg-zinc-800 rounded-full overflow-hidden"><div class="h-full w-2/3 bg-zzz-lime"></div></div>
+                                            <span class="text-[10px] font-mono text-zzz-lime">DATA LOADED</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="min-w-[85vw] md:min-w-[320px] lg:min-w-[380px] h-[500px] bg-black border-2 border-zinc-800 relative flex flex-col snap-center group hover:border-zzz-blue transition-colors duration-300 overflow-hidden shrink-0">
+                                    <div class="absolute top-4 right-4 text-zinc-800 font-black text-6xl opacity-50 z-0">02</div>
+                                    <div class="h-[55%] w-full relative overflow-hidden bg-zinc-900">
+                                        <img src="https://placehold.co/600x800/001/333?text=Dongbaeklim" class="w-full h-full object-cover opacity-60 grayscale group-hover:grayscale-0 group-hover:opacity-100 group-hover:scale-110 transition-all duration-500" />
+                                        <div class="absolute bottom-0 left-0 w-full h-12 bg-black" style="clip-path: polygon(0 100%, 100% 100%, 100% 0)"></div>
+                                        <div class="absolute bottom-0 left-0 w-full h-2 bg-zzz-blue transform translate-y-full group-hover:translate-y-0 transition-transform duration-300 delay-100 origin-bottom-right -rotate-3"></div>
+                                    </div>
+                                    <div class="flex-1 p-6 relative z-10 flex flex-col">
+                                        <div class="mb-auto">
+                                            <h3 class="text-4xl font-black font-eng italic text-white leading-none mb-1">CITY</h3>
+                                            <p class="text-zzz-blue font-bold text-sm tracking-widest mb-4">동백림 (冬白林)</p>
+                                            <p class="text-gray-400 text-sm leading-relaxed border-t border-zinc-700 pt-4">인구 32만의 인공섬. 사실상 한국, 일본 정부가 손을 놓아버린 무법지대입니다. 시청과 경찰들만 고생이죠. </p>
+                                        </div>
+                                        <div class="flex items-center gap-2 mt-4 opacity-50 group-hover:opacity-100 transition-opacity">
+                                            <div class="h-1 w-full bg-zinc-800 rounded-full overflow-hidden"><div class="h-full w-4/5 bg-zzz-blue"></div></div>
+                                            <span class="text-[10px] font-mono text-zzz-blue">LIVE SIGNAL</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="min-w-[85vw] md:min-w-[320px] lg:min-w-[380px] h-[500px] bg-black border-2 border-zinc-800 relative flex flex-col snap-center group hover:border-zzz-red transition-colors duration-300 overflow-hidden shrink-0">
+                                    <div class="absolute top-4 right-4 text-zinc-800 font-black text-6xl opacity-50 z-0">03</div>
+                                    <div class="h-[55%] w-full relative overflow-hidden bg-zinc-900">
+                                        <img src="https://placehold.co/600x800/311/333?text=Threat+Monster" class="w-full h-full object-cover opacity-60 grayscale group-hover:grayscale-0 group-hover:opacity-100 group-hover:scale-110 transition-all duration-500" />
+                                        <div class="absolute bottom-0 left-0 w-full h-12 bg-black" style="clip-path: polygon(0 100%, 100% 100%, 100% 0)"></div>
+                                        <div class="absolute bottom-0 left-0 w-full h-2 bg-zzz-red transform translate-y-full group-hover:translate-y-0 transition-transform duration-300 delay-100 origin-bottom-right -rotate-3"></div>
+                                    </div>
+                                    <div class="flex-1 p-6 relative z-10 flex flex-col">
+                                        <div class="mb-auto">
+                                            <h3 class="text-4xl font-black font-eng italic text-white leading-none mb-1">THREAT</h3>
+                                            <p class="text-zzz-red font-bold text-sm tracking-widest mb-4">탁기</p>
+                                            <p class="text-gray-400 text-sm leading-relaxed border-t border-zinc-700 pt-4">심예 내부에서 나타나는 먼지같은 입자입니다. 오래 노출되면 괴물로 변해버릴 지도 모르죠.</p>
+                                        </div>
+                                        <div class="flex items-center gap-2 mt-4 opacity-50 group-hover:opacity-100 transition-opacity">
+                                            <div class="h-1 w-full bg-zinc-800 rounded-full overflow-hidden"><div class="h-full w-4/5 bg-zzz-red animate-pulse"></div></div>
+                                            <span class="text-[10px] font-mono text-zzz-red">DANGER</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section class="mb-20">
+                        <div class="flex items-baseline gap-4 mb-6 border-b-4 border-white pb-2">
+                            <span class="text-6xl font-black text-zzz-red opacity-20 absolute -z-10 -mt-8 ml-2 select-none">02</span>
+                            <h2 class="text-4xl font-black font-eng italic transform -skew-x-6">FILE 02. <span class="text-white">DETAILS</span></h2>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div class="bg-zinc-800 p-6 border-l-4 border-zzz-blue hover:bg-zinc-700 transition">
+                                <h3 class="font-eng font-black text-2xl text-zzz-blue mb-2">/// DIVER (다이버)</h3>
+                                <p class="text-sm text-gray-300">의뢰를 받아 활동하는 일종의 해결사들이죠. 심예를 탐험하며 돈을 벌거나, 시시콜콜한 고양이 찾기 의뢰까지 다양하게 수행한답니다.</p>
+                            </div>
+                            <div class="bg-zinc-800 p-6 border-l-4 border-zzz-red hover:bg-zinc-700 transition">
+                                <h3 class="font-eng font-black text-2xl text-zzz-red mb-2">/// WATCHER (조사국)</h3>
+                                <p class="text-sm text-gray-300">심예와 관련된 모든것을 관장하는 일종의 '해결사 기관'입니다. 심예가 나타날만한 곳을 모니터링하거나, 다이버들을 소집하기도 하죠..</p>
+                            </div>
+                            <div class="bg-zinc-800 p-6 border-l-4 border-zzz-lime hover:bg-zinc-700 transition">
+                                <h3 class="font-eng font-black text-2xl text-zzz-lime mb-2">/// CORP. (기업)</h3>
+                                <p class="text-sm text-gray-300">한국, 일본, 미국, 러시아 등 여러 회사가 도시 안에 지부를 만들어 활동하기도 합니다. 도시의 패권을 잡게 되면 무역을 독점할만한 정도의 능력을 갖추게 되니까요.</p>
+                            </div>
+                            <div class="bg-zinc-800 p-6 border-l-4 border-purple-500 hover:bg-zinc-700 transition">
+                                <h3 class="font-eng font-black text-2xl text-purple-500 mb-2">/// VARIANTS (괴이)</h3>
+                                <p class="text-sm text-gray-300">사물에 씌여있거나, 소문속의 유령, 인간이 변한 괴물 등 심예 내부를 배회하는 적대적 존재들입니다. 심예의 생김새에 따라 다양한 모습을 하고 있습니다.</p>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section class="mb-20">
+                        <div class="flex items-baseline gap-4 mb-6 border-b-4 border-white pb-2">
+                            <span class="text-6xl font-black text-white opacity-20 absolute -z-10 -mt-8 ml-2 select-none">03</span>
+                            <h2 class="text-4xl font-black font-eng italic transform -skew-x-6">FILE 03. <span class="text-white">AGENTS</span></h2>
+                        </div>
+
+                        <div onclick="openCharacterModal()" class="cursor-pointer group relative h-64 w-full bg-black overflow-hidden border-4 border-white hover:border-zzz-lime transition-colors duration-300">
+                            <div class="absolute inset-0 bg-[url('https://placehold.co/800x400/222/d946ef?text=AGENTS+ROSTER')] bg-cover bg-center opacity-50 group-hover:scale-105 transition-transform duration-700"></div>
+                            <div class="absolute inset-0 bg-black/30 group-hover:bg-transparent transition-colors"></div>
+                            <div class="absolute inset-0 flex flex-col items-center justify-center z-10">
+                                <h3 class="text-5xl md:text-7xl font-black font-eng italic text-white group-hover:text-zzz-lime transition-colors text-outline drop-shadow-lg">ACCESS DB</h3>
+                                <p class="mt-2 text-white bg-black px-2 font-mono text-xl group-hover:bg-zzz-lime group-hover:text-black transition-colors">CLICK TO VIEW ALL CHARACTERS</p>
+                            </div>
+                            <div class="absolute top-0 left-0 w-full h-1 bg-zzz-lime transform -translate-x-full group-hover:translate-x-0 transition-transform duration-500"></div>
+                            <div class="absolute bottom-0 right-0 w-full h-1 bg-zzz-lime transform translate-x-full group-hover:translate-x-0 transition-transform duration-500"></div>
+                        </div>
+                    </section>
+
+                    <section>
+                        <div class="flex items-baseline gap-4 mb-6 border-b-4 border-white pb-2">
+                            <span class="text-6xl font-black text-zzz-lime opacity-20 absolute -z-10 -mt-8 ml-2 select-none">04</span>
+                            <h2 class="text-4xl font-black font-eng italic transform -skew-x-6">FILE 04. <span class="text-white">CLASSIFIED</span></h2>
+                        </div>
+
+                        <div class="relative w-full h-[600px] border-4 border-zinc-800 bg-black overflow-hidden group hover:border-zzz-lime transition-colors duration-500">
+                            <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-30"></div>
+                            <div class="absolute inset-0 bg-gradient-to-t from-zzz-lime/20 via-transparent to-transparent opacity-50"></div>
+
+                            <img src="https://placehold.co/800x600/000/d946ef?text=CORE+ANOMALY" class="absolute inset-0 w-full h-full object-cover opacity-60 mix-blend-screen group-hover:scale-110 group-hover:opacity-80 transition-all duration-1000 grayscale group-hover:grayscale-0" />
+
+                            <div class="absolute top-0 left-0 w-full h-1 bg-zzz-lime shadow-[0_0_20px_#d946ef] animate-[scanline_3s_linear_infinite]"></div>
+
+                            <div class="absolute bottom-0 left-0 w-full p-8 md:p-12 bg-gradient-to-t from-black via-black/80 to-transparent">
+                                <div class="flex items-center gap-4 mb-2">
+                                    <span class="bg-zzz-red text-white font-bold px-2 py-0.5 text-xs animate-pulse">TOP SECRET</span>
+                                    <span class="text-zzz-lime font-mono text-xs border border-zzz-lime px-2">ENTITY: UNKNOWN</span>
+                                </div>
+                                <h3 class="text-5xl md:text-7xl font-black font-eng text-white italic leading-none mb-4 text-outline drop-shadow-[0_0_10px_rgba(217,70,239,0.5)]">
+                                    THE<br />
+                                    <span class="text-transparent bg-clip-text bg-gradient-to-r from-zzz-lime to-white">RESONANCE</span>
+                                </h3>
+                                <p class="max-w-xl text-gray-300 text-lg leading-relaxed border-l-4 border-zzz-lime pl-4 break-keep text-justify">
+                                    한국과 일본 사이 공해상에 솟아난 인공섬입니다. 원래는 자유무역의 첨병이 될 최첨단 도시였지만, <b>'대공명'</b>이라는 재앙 이후 모든 것이 뒤틀렸죠. 도시에서는 이따금 <b>'피안'</b>의 데이터가 덧씌워지는 <b>'심예'</b>라는 현상이 발생합니다. 일종의 버그 현상이죠. 길거리가 갑자기 안개가 자욱한 숲이 되거나, 존재하지 않던 폐병원이 나타나거나, 길이 무한히 반복되는 터널이 생겨나기도 합니다. 첨단 기술과 오컬트가 뒤섞이고, 다양한 종족과 세력이 각자의 이익을 위해 암투를 벌이는, 사실상 <b>'법의 공백지대'</b>나 다름없는 곳입니다. 당신이 어떤 이야기를 만들어가든, 이 도시는 기꺼이 그 무대가 되어줄 겁니다.
+                                </p>
+                            </div>
+
+                            <div class="absolute top-4 right-4 flex flex-col items-end gap-1 opacity-70">
+                                <div class="w-24 h-1 bg-zzz-lime"></div>
+                                <div class="w-16 h-1 bg-zinc-600"></div>
+                                <div class="w-8 h-1 bg-zzz-lime"></div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <div class="mt-12 text-center text-zinc-600 text-xs font-mono">
+                        COPYRIGHT 2052 © SPECIAL SELF-GOVERNING CITY DONG-BAEK-LIM.
+                    </div>
+                </div>
+
+                <div class="absolute bottom-0 left-0 w-full p-4 flex justify-center bg-gradient-to-t from-black to-transparent pointer-events-none z-10">
+                    <button onclick="window.location.href='https://share.crack.wrtn.ai/9dk10w'" class="pointer-events-auto bg-zzz-lime border-2 border-black px-12 py-4 shadow-[4px_4px_0_0_#000] transform -skew-x-12 hover:-translate-y-1 active:translate-y-0 transition-transform group">
+                        <span class="block transform skew-x-12 font-black text-xl text-black flex items-center gap-2">
+                            <span class="bg-black text-zzz-lime px-1 text-sm">START</span> ENTER CITY
+                        </span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div id="character-modal" class="fixed inset-0 z-50 bg-zinc-900 hidden flex flex-col md:flex-row overflow-hidden">
+            <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/diagmonds-light.png')] opacity-5 pointer-events-none"></div>
+            <div class="absolute inset-0 bg-gradient-to-r from-zinc-900 via-zinc-900/90 to-transparent z-0 pointer-events-none"></div>
+
+            <button onclick="closeCharacterModal()" class="absolute top-6 left-6 z-50 text-white font-bold hover:text-zzz-red flex items-center gap-2 group">
+                <div class="w-8 h-8 border-2 border-current flex items-center justify-center rounded-full group-hover:rotate-90 transition-transform">✕</div>
+                <span class="font-eng text-xl tracking-widest">BACK</span>
+            </button>
+
+            <div class="relative w-full md:w-2/3 h-full flex items-center justify-center z-10 pointer-events-none">
+                <img id="char-art" src="" class="h-[110%] md:h-[120%] object-cover object-top transform translate-y-10 transition-all duration-500 opacity-0 md:translate-x-[-10%]" />
+                <div class="absolute top-24 left-6 md:left-20 flex flex-col items-start opacity-0 animate-slide-in" style="animation-delay: 0.2s; animation-fill-mode: forwards">
+                    <h2 id="char-name" class="text-5xl md:text-7xl font-black text-white italic leading-none drop-shadow-md uppercase"></h2>
+                </div>
+            </div>
+
+            <div class="relative w-full md:w-1/3 h-full flex flex-col z-20 pointer-events-auto bg-gradient-to-l from-black/80 to-transparent">
+                <div class="absolute right-0 top-0 h-full w-64 bg-black/90 border-l-2 border-white/10 flex flex-col items-center py-10 gap-4 overflow-y-auto hidden md:flex no-scrollbar z-30">
+                    <div id="faction-sidebar" class="flex flex-col gap-4 w-full px-4 pb-20"></div>
+                </div>
+
+                <div class="flex-1 flex flex-col justify-center px-6 md:pr-[18rem] text-right items-end mt-20 md:mt-0 relative z-20">
+                    <div class="max-w-2xl w-full"> 
+                        <h3 class="text-2xl font-bold text-zzz-lime mb-4 italic">"<span id="char-quote">...</span>"</h3>
+                        <div class="bg-black/40 border-r-4 border-zzz-lime p-6 backdrop-blur-sm mb-6 max-h-[50vh] overflow-y-auto custom-scrollbar"> 
+                            <p id="char-desc" class="text-gray-300 text-sm leading-relaxed text-right"></p>
+                        </div>
+                        <div id="char-tags" class="flex gap-2 justify-end flex-wrap"></div>
+                    </div>
+                </div>
+                <div class="h-48 md:h-64 w-full md:w-[calc(100%-16rem)] bg-zinc-900 border-t-2 border-zzz-lime flex items-center px-4 overflow-x-auto gap-4 relative z-20">
+                    <div class="absolute -top-3 left-10 w-0 h-0 border-l-[10px] border-l-transparent border-r-[10px] border-r-transparent border-b-[10px] border-b-zzz-lime"></div>
+                    <div id="char-thumbnails" class="flex gap-4 min-w-max p-2"></div>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            // --- 1. DATA: FACTIONS ---
+            // 🔶 수정된 부분: icon에 이미지 URL 사용 (placehold.co로 예시 적용)
+            const factions = [
+                { id: "city", name: "특별자치시청", icon: "https://pub-d6b747625dd5443c8f960889b65d51e6.r2.dev/city.png", color: "bg-green-600" },
+                { id: "police", name: "공안국", icon: "https://pub-d6b747625dd5443c8f960889b65d51e6.r2.dev/POLICE.png", color: "bg-blue-600" },
+                { id: "invest", name: "조사국", icon: "https://pub-d6b747625dd5443c8f960889b65d51e6.r2.dev/INVEST.png", color: "bg-red-600" },
+                { id: "corp", name: "홍경그룹", icon: "https://pub-d6b747625dd5443c8f960889b65d51e6.r2.dev/HK.png", color: "bg-cyan-600" },
+                { id: "clan", name: "우에스미 가문", icon: "https://pub-d6b747625dd5443c8f960889b65d51e6.r2.dev/uesumi.png", color: "bg-pink-600" },
+                { id: "ind", name: "나리타중공업", icon: "https://pub-d6b747625dd5443c8f960889b65d51e6.r2.dev/nrt.png", color: "bg-orange-600" },
+                { id: "hexa", name: "헥사 랩", icon: "https://pub-d6b747625dd5443c8f960889b65d51e6.r2.dev/hexa.png", color: "bg-teal-600" },
+                { id: "mafia", name: "흑묘회", icon: "https://pub-d6b747625dd5443c8f960889b65d51e6.r2.dev/kuro.png", color: "bg-purple-600" },
+                { id: "cult", name: "무위교", icon: "https://pub-d6b747625dd5443c8f960889b65d51e6.r2.dev/dd.png", color: "bg-gray-600" },
+                { id: "free", name: "무소속", icon: "https://pub-d6b747625dd5443c8f960889b65d51e6.r2.dev/none.png", color: "bg-yellow-500" },
+            ];
+
+            // --- 2. DATA: CHARACTERS ---
+            // FIXED QUOTES AND ADDED COMMENTARY STYLE DESCRIPTIONS
+            const characters = {
+                city: [
+                    { 
+                        id: "jihyo", 
+                        name: "안지효", 
+                        quote: "도시가 좀 개판이긴 하지? 그래도 살기는 좋은 곳이니까 걱정하지마.", 
+                        desc: `"시장님. 이 안건은 예산 낭비입니다. 그리고 제발 좀 입으십시오. 시의 품격이 떨어집니다."<br><span class="text-zinc-500 text-sm font-bold">- 나디야 마르넷</span><br><br>"언제나 활기 넘치는 분이죠. 그 에너지를 시 예산 심의 때도 좀 보여주시면 좋을 텐데요, 후후."<br><span class="text-zinc-500 text-sm font-bold">- 로르텔 루드밀라</span>`, 
+                        img: "https://placehold.co/600x1000/22c55e/fff?text=JIHYO", 
+                        thumb: "https://placehold.co/100x100/22c55e/fff?text=Jihyo", 
+                        tags: ["Mayor", "Alligator"] 
+                    },
+                    { 
+                        id: "nadiya", 
+                        name: "나디야 마르넷", 
+                        quote: "그래서, 용건이 뭐죠? 30초 내로 끝내주시겠습니까?", 
+                        desc: `"나디야는 항상 저렇게 틱틱대지만, 일 하나는 끝내주게 잘한다고. 쟤 없었으면 시청은 벌써 무너졌을걸?"<br><span class="text-zinc-500 text-sm font-bold">- 안지효</span><br><br>"비서관의 업무 처리 능력은 우리 홍경에서도 높이 평가하고 있다. 다만, 감정적인 대응은 프로답지 못하군."<br><span class="text-zinc-500 text-sm font-bold">- 이성협</span>`, 
+                        img: "https://placehold.co/600x1000/22c55e/fff?text=NADIYA", 
+                        thumb: "https://placehold.co/100x100/22c55e/fff?text=Nadiya", 
+                        tags: ["Secretary", "Cat"] 
+                    },
+                ],
+                police: [
+                    { 
+                        id: "makina", 
+                        name: "미나세 마키나", 
+                        quote: "아, 귀찮아... 알아서 처리해줘. 난 잠깐 낮잠 좀 자야겠다.", 
+                        desc: `"네, 네! 마키나 선배님! 바로 처리하겠습니다! 근데... 뭘 처리해야 하는 걸까요?"<br><span class="text-zinc-500 text-sm font-bold">- 하야미 안즈</span><br><br>"치안부장은 맨날 늘어져 있기만 하는 것 같던데, 가끔 보여주는 실력은 진짜 섬뜩하다니까요. 얕보면 안 될 사람이에요."<br><span class="text-zinc-500 text-sm font-bold">- 윤필립</span>`, 
+                        img: "https://placehold.co/600x1000/3b82f6/fff?text=MAKINA", 
+                        thumb: "https://placehold.co/100x100/3b82f6/fff?text=Makina", 
+                        tags: ["Chief", "Lazy"] 
+                    },
+                    { 
+                        id: "anzu", 
+                        name: "하야미 안즈", 
+                        quote: "다친 곳은 없으신가요?!", 
+                        desc: `"저 바보는 의욕만 넘쳐서 탈이야. 뭐, 그 점이 귀엽지만. 덕분에 내가 편한 것도 있고."<br><span class="text-zinc-500 text-sm font-bold">- 미나세 마키나</span><br><br>"안즈 순경님? 아~ 그 개 같은 분! 너무 착해서 이 험한 도시에서 잘 살아남을 수 있을지 걱정이라니까요."<br><span class="text-zinc-500 text-sm font-bold">- 옌 페이</span>`, 
+                        img: "https://placehold.co/600x1000/3b82f6/fff?text=ANZU", 
+                        thumb: "https://placehold.co/100x100/3b82f6/fff?text=Anzu", 
+                        tags: ["Rookie", "Dog"] 
+                    },
+                    { 
+                        id: "yume", 
+                        name: "우에스미 유메", 
+                        quote: "전원, 전투 준비. 오판이라면 돌아가서 시말서는 쓰도록 하겠습니다.", 
+                        desc: `"부장님은 너무 딱딱하시다니까~ 좀 웃고 그러시면 얼마나 예쁘실까. 뭐, 그래도 그 판단력 덕에 저희가 목숨 부지하는 거지만요."<br><span class="text-zinc-500 text-sm font-bold">- 윤필립</span><br><br>"언니는... 나보다 월등할 정도로 강해. 닿을 수 없는 경지라서 동경하게 되는걸까."<br><span class="text-zinc-500 text-sm font-bold">- 우에스미 유리</span>`, 
+                        img: "https://placehold.co/600x1000/3b82f6/fff?text=YUME", 
+                        thumb: "https://placehold.co/100x100/3b82f6/fff?text=Yume", 
+                        tags: ["Samurai", "Leader"] 
+                    },
+                    { 
+                        id: "philip", 
+                        name: "윤필립", 
+                        quote: "에이, 그렇게 심각하게 생각하지 말자고요. 인생 뭐 있습니까?", 
+                        desc: `"그의 그 가벼운 태도는 언젠가 발목을 잡을 겁니다. ...하지만, 그 실력만큼은 의심하지 않아요."<br><span class="text-zinc-500 text-sm font-bold">- 우에스미 유메</span><br><br>"... 시끄러우니까 좀 닥쳐."<br><span class="text-zinc-500 text-sm font-bold">- 방예림</span>`, 
+                        img: "https://placehold.co/600x1000/3b82f6/fff?text=PHILIP", 
+                        thumb: "https://placehold.co/100x100/3b82f6/fff?text=Philip", 
+                        tags: ["Playboy", "Power"] 
+                    },
+                    { 
+                        id: "yerim", 
+                        name: "방예림", 
+                        quote: "...", 
+                        desc: `"오늘 저녁에 시간 있어? ...아, 무시하지 말고 대답 좀!"<br><span class="text-zinc-500 text-sm font-bold">- 윤필립</span><br><br>"대책부의 방예림 씨 말인가요? 그 점프슈트, 엄청 좋아 보이던데! 나리타 중공업 특제품이려나?"<br><span class="text-zinc-500 text-sm font-bold">- 마츠카제 시즈</span>`, 
+                        img: "https://placehold.co/600x1000/3b82f6/fff?text=YERIM", 
+                        thumb: "https://placehold.co/100x100/3b82f6/fff?text=Yerim", 
+                        tags: ["Silent", "Mask"] 
+                    },
+                    { 
+                        id: "nabi", 
+                        name: "나비", 
+                        quote: "아, 네네~ 신호위반 딱지 끊겠슴다. 잠깐만요, 알람 좀 확인하고요.", 
+                        desc: `"교통안전부에 저런 애가 있었나? 신입이라고? 하긴, 요즘 애들은 다 저렇지 뭐. 사고만 안 치면 됐어."<br><span class="text-zinc-500 text-sm font-bold">- 안지효</span><br><br>"나비 순경님! 근무 중에는 핸드폰을 보시면 안 된다고 생각합니다!!!"<br><span class="text-zinc-500 text-sm font-bold">- 하야미 안즈</span>`, 
+                        img: "https://placehold.co/600x1000/3b82f6/fff?text=NABI", 
+                        thumb: "https://placehold.co/100x100/3b82f6/fff?text=Nabi", 
+                        tags: ["Gyaru", "Phone"] 
+                    },
+                ],
+                invest: [
+                    { 
+                        id: "lortel", 
+                        name: "로르텔", 
+                        quote: "어머, 그런 위험한 의뢰를 하시겠다고요? 목숨값이 꽤 비싸실 것 같은데... 얼마까지 알아보신걸까.", 
+                        desc: `"속을 알 수 없는 여자입니다. 제 입장에서는 돈만 챙기면 그만입니다만."<br><span class="text-zinc-500 text-sm font-bold">- 엘렌 디아즈</span><br><br>"국장님 돈 좋아하는 건 알아줘야 한다니까? 근데 그만큼 일도 잘 따오고, 우리 목숨값도 잘 챙겨주시니 불만은 없어요."<br><span class="text-zinc-500 text-sm font-bold">- 옌 페이</span>`, 
+                        img: "https://placehold.co/600x1000/ef4444/fff?text=LORTEL", 
+                        thumb: "https://placehold.co/100x100/ef4444/fff?text=Lortel", 
+                        tags: ["Boss", "Mystery"] 
+                    },
+                    { 
+                        id: "fei", 
+                        name: "옌 페이", 
+                        quote: "네~ 고객님! 조사국 상담원 옌 페이입니다! 뭘 도와드릴까요? 그 전에, 진상고객인지 확인먼저 하도록 할게요?", 
+                        desc: `"페이 양은 언제나 활기차서 좋소. 그녀의 목소리를 듣고 있으면 소승까지 기운이 나는 듯 하오."<br><span class="text-zinc-500 text-sm font-bold">- 센코</span><br><br>"시끄럽습니다. 저런 가벼운 태도로 어떻게 다이버들의 생사가 걸린 상담을 하는 건지 이해가 안 가는군요."<br><span class="text-zinc-500 text-sm font-bold">- 엘렌 디아즈</span>`, 
+                        img: "https://placehold.co/600x1000/ef4444/fff?text=FEI", 
+                        thumb: "https://placehold.co/100x100/ef4444/fff?text=Fei", 
+                        tags: ["Snake", "Cunning"] 
+                    },
+                    { 
+                        id: "senko", 
+                        name: "센코", 
+                        quote: "소승에게 맡겨주시겠소? 이 강철의 몸으로 길을 열어 보이리다.", 
+                        desc: `"센코 양반만큼 의체를 잘 다루는 사람은 이 동백림에서도 손에 꼽을기라. 그 양반 펀치는 진짜배기제."<br><span class="text-zinc-500 text-sm font-bold">- 박복춘</span><br><br>"센코!아아그의전신의체는나리타중공업의구형모델을커스텀한것이지!전투데이터를기반으로한움직임최적화!정말이지아름다운기계공학의결정체야!"<br><span class="text-zinc-500 text-sm font-bold">- 셜록 홈스테인</span>`, 
+                        img: "https://placehold.co/600x1000/ef4444/fff?text=SENKO", 
+                        thumb: "https://placehold.co/100x100/ef4444/fff?text=Senko", 
+                        tags: ["Cyborg", "Monk"] 
+                    },
+                    { 
+                        id: "ellen", 
+                        name: "엘렌 디아즈", 
+                        quote: "의뢰 내용은 파악했습니다. 선금은 절반, 성공 보수는 따로 협상하죠. 아, 시시한 흥정은 사양하겠습니다.", 
+                        desc: `"엘렌 씨는 맨날 돈, 돈, 돈! 노래를 부른다니까요. 얼굴값 좀 하라지, 정말."<br><span class="text-zinc-500 text-sm font-bold">- 옌 페이</span><br><br>"엘렌 디아즈의 검술은 진짜야. 우에스미류와는 다르지만, 녀석의 레이피어는 분명 정점에 닿아있어. 한번 겨뤄보고 싶을 정도로."<br><span class="text-zinc-500 text-sm font-bold">- 우에스미 유리</span>`, 
+                        img: "https://placehold.co/600x1000/ef4444/fff?text=ELLEN", 
+                        thumb: "https://placehold.co/100x100/ef4444/fff?text=Ellen", 
+                        tags: ["Fencer", "Idealist"] 
+                    },
+                ],
+                corp: [
+                    { 
+                        id: "yuha", 
+                        name: "홍유하", 
+                        quote: "저희 홍경그룹은 당신의 가능성에 투자하는 겁니다. 아시겠죠?", 
+                        desc: `"아가씨의 판단은 언제나 옳습니다. 따르기만 하면 됩니다."<br><span class="text-zinc-500 text-sm font-bold">- 이성협</span><br><br>"홍경그룹의 지부장님은 참 대단하세요. 저희 같은 뒷골목 조직과는 격이 다르죠. 하지만... 돈으로 살 수 없는 것도 분명 있답니다?"<br><span class="text-zinc-500 text-sm font-bold">- 리 샤오옌</span>`, 
+                        img: "https://placehold.co/600x1000/06b6d4/fff?text=YUHA", 
+                        thumb: "https://placehold.co/100x100/06b6d4/fff?text=Yuha", 
+                        tags: ["CEO", "Rich"] 
+                    },
+                    { 
+                        id: "seonghyeop", 
+                        name: "이성협", 
+                        quote: "용건만 간단히 말해. 아가씨의 1분 1초는 네놈 따위의 인생보다 가치가 높으니까.", 
+                        desc: `"성협 씨, 말이 좀 험하죠? 그래도 저만큼 충직하고 유능한 사람은 찾기 힘들어요. 제게는 가족 같은 사람이랍니다."<br><span class="text-zinc-500 text-sm font-bold">- 홍유하</span><br><br>"홍경의 비서실장... 유능하지만, 융통성이 부족합니다. 모든 것을 차트와 데이터로만 판단하려는 경향이 있죠."<br><span class="text-zinc-500 text-sm font-bold">- 나디야 마르넷</span>`, 
+                        img: "https://placehold.co/600x1000/06b6d4/fff?text=SEONGHYEOP", 
+                        thumb: "https://placehold.co/100x100/06b6d4/fff?text=Seonghyeop", 
+                        tags: ["Secretary", "Glasses"] 
+                    },
+                    { 
+                        id: "choi", 
+                        name: "최 부장", 
+                        quote: "신사답지 못한 행동에는, 그에 걸맞은 교육이 필요하지 않겠습니까?", 
+                        desc: `"가면이 멋집니다. 아주 예술적이에요."<br><span class="text-zinc-500 text-sm font-bold">- 잭 더 리퍼</span><br><br>"저 사람은 그림자 같아. 언제 어디서 튀어나올지 모른다니까. 와이어 소리가 들리면 이미 늦은 거야."<br><span class="text-zinc-500 text-sm font-bold">- 웨이젠</span>`, 
+                        img: "https://placehold.co/600x1000/06b6d4/fff?text=CHOI", 
+                        thumb: "https://placehold.co/100x100/06b6d4/fff?text=Choi", 
+                        tags: ["Agent", "Wire"] 
+                    },
+                ],
+                clan: [
+                    { 
+                        id: "yuri", 
+                        name: "우에스미 유리", 
+                        quote: "검사로써도, 가주 대리로써도 아직 한참 부족해.", 
+                        desc: `"유리 아가씨! 또 혼자서 무리하고 계시잖아요! 정말이지, 좀 솔직해지면 좋을 텐데..."<br><span class="text-zinc-500 text-sm font-bold">- 마츠카제 시즈</span><br><br>"유리... 그 아이는 재능이 넘치지만, 너무 조급해하고 있어요. 검은 그런 마음으로 쥐는 것이 아닌데... 걱정이군요."<br><span class="text-zinc-500 text-sm font-bold">- 우에스미 유메</span>`, 
+                        img: "https://placehold.co/600x1000/db2777/fff?text=YURI", 
+                        thumb: "https://placehold.co/100x100/db2777/fff?text=Yuri", 
+                        tags: ["Sister", "Gamble"] 
+                    },
+                    { 
+                        id: "shizu", 
+                        name: "마츠카제 시즈", 
+                        quote: "닌자라곤 하지만, 어디 숨어있거나 그러진 않는다고요?", 
+                        desc: `"시즈는... 시끄럽지만, 믿을 수 있는 녀석이야. 언제나 내 곁에 있어 줬지."<br><span class="text-zinc-500 text-sm font-bold">- 우에스미 유리</span><br><br>" 닌자라니, 시대착오적인 것들. 저 의체 팔다리는 우리 회사 구형 모델이잖아요? 돈도 없는걸까요."<br><span class="text-zinc-500 text-sm font-bold">- 나리타 요우메</span>`, 
+                        img: "https://placehold.co/600x1000/db2777/fff?text=SHIZU", 
+                        thumb: "https://placehold.co/100x100/db2777/fff?text=Shizu", 
+                        tags: ["Ninja", "Gyaru"] 
+                    },
+                ],
+                ind: [
+                    { 
+                        id: "youme", 
+                        name: "나리타 요우메", 
+                        quote: "당신들 몸뚱이를 전부 고철로 만들어주기 전에 썩 꺼지시죠.", 
+                        desc: `"사장, 나에게 주다. 착한. 돈."<br><span class="text-zinc-500 text-sm font-bold">- 압둘 엘하임</span><br><br>"나리타 중공업의 아가씨 말이오? 소승의 몸을 정비해 주는 솜씨는 일품이지. 성격은... 뭐, 장인의 고집이라 생각하고 있소."<br><span class="text-zinc-500 text-sm font-bold">- 센코</span>`, 
+                        img: "https://placehold.co/600x1000/ea580c/fff?text=YOUME", 
+                        thumb: "https://placehold.co/100x100/ea580c/fff?text=Youme", 
+                        tags: ["Ojosama", "Toxic"] 
+                    },
+                    { 
+                        id: "abdul", 
+                        name: "압둘 엘하임", 
+                        quote: "힘세고 강한 아침. 나, 오늘 일한다. 열심히. 가족 위해. 돈, 많이 번다.", 
+                        desc: `"압둘이 저래 보여도 손재주 하나는 끝내준다니께. 쬐까 다혈질인기 흠이지만, 심성은 착한 동상이어."<br><span class="text-zinc-500 text-sm font-bold">- 박복춘</span><br><br>"압둘은 멍청하지만 성실하니까요. 저런 녀석이 하나쯤은 있어야 공장이 잘 돌아가죠. 월급은 꼬박꼬박 주고 있으니 불만 없겠죠."<br><span class="text-zinc-500 text-sm font-bold">- 나리타 요우메</span>`, 
+                        img: "https://placehold.co/600x1000/ea580c/fff?text=ABDUL", 
+                        thumb: "https://placehold.co/100x100/ea580c/fff?text=Abdul", 
+                        tags: ["Worker", "Cyborg"] 
+                    },
+                    { 
+                        id: "bokchun", 
+                        name: "박복춘", 
+                        quote: "인생이나 기계나, 차근차근 들여다봐야 탈이 없는 법이여.", 
+                        desc: `"반장, 좋은 사람. 나, 그에게 많이 배운다. Korean Dialect."<br><span class="text-zinc-500 text-sm font-bold">- 압둘 엘하임</span><br><br>"흠...나리타중공업의작업반장을말하는건가?그사람의움직임은의체라고는믿기지않을정도의날렵함을가지고있지!그정도의고성능출력이나리타의기술력이라는걸지도모르지."<br><span class="text-zinc-500 text-sm font-bold">- 셜록 홈스테인</span>`, 
+                        img: "https://placehold.co/600x1000/ea580c/fff?text=BOKCHUN", 
+                        thumb: "https://placehold.co/100x100/ea580c/fff?text=Bokchun", 
+                        tags: ["Foreman", "Kind"] 
+                    },
+                ],
+                hexa: [
+                    { 
+                        id: "sherlock", 
+                        name: "셜록 홈스테인", 
+                        quote: "보게나!역시이번에도내부구조는기존의물리학법칙을완전히거스르고있어!피안의데이터가현실에간섭하며생성된초차원적결정체!이것이야말로이세계의진리를향한열쇠라고!", 
+                        desc: `"아, 진짜 시끄러워... 저희 교수님이 죄송해요."<br><span class="text-zinc-500 text-sm font-bold">- 제인 왓슨</span><br><br>"교수님의 탐구심은 존경스럽습니다. 다만... 가끔은 그 탐구심이 너무 폭주해서 주변에 피해를 준다는 게 문제지만요. 얌전히 연구만 하시면 좋을 텐데."<br><span class="text-zinc-500 text-sm font-bold">- 허클베리 폰</span>`, 
+                        img: "https://placehold.co/600x1000/14b8a6/fff?text=SHERLOCK", 
+                        thumb: "https://placehold.co/100x100/14b8a6/fff?text=Sherlock", 
+                        tags: ["Science", "Mech"] 
+                    },
+                    { 
+                        id: "jane", 
+                        name: "제인 왓슨", 
+                        quote: " 보고서는 내일까지 제출하면 안 될까요? 지금 너무 졸린데... 안된다고요?", 
+                        desc: `"제인!내훌륭한조수이자짐꾼이지!그녀의빠른두뇌회전과상황판단능력이없었다면내연구는훨씬더뎠을걸세!물론게으름만좀고친다면말이야!"<br><span class="text-zinc-500 text-sm font-bold">- 셜록 홈스테인</span><br><br>"...쟤, 나랑 닮았네. 귀찮은 거 싫어하는 거. 그래도 할 일은 하는 걸 보니 나보단 성실한가."<br><span class="text-zinc-500 text-sm font-bold">- 레니</span>`, 
+                        img: "https://placehold.co/600x1000/14b8a6/fff?text=JANE", 
+                        thumb: "https://placehold.co/100x100/14b8a6/fff?text=Jane", 
+                        tags: ["Mouse", "Smart"] 
+                    },
+                    { 
+                        id: "huckle", 
+                        name: "허클베리 폰", 
+                        quote: "제가 도와드릴까요? 후후, 무섭다는 눈빛으로 보시는거에요?", 
+                        desc: `"헥사 랩의 저 어린 것... 나와 비슷한 종류의 냄새가 나는구나. 시간이 뒤틀린 자. 흥미롭기 짝이 없느니라."<br><span class="text-zinc-500 text-sm font-bold">- 타마모</span><br><br>"허클베리군은지식의깊이가상당하다네!마치몇백년은산사람같단말이지!가끔나를어린애취급하는건기분나쁘지만연구에대한조예는깊어서좋은동료라고생각한다!"<br><span class="text-zinc-500 text-sm font-bold">- 셜록 홈스테인</span>`, 
+                        img: "https://placehold.co/600x1000/14b8a6/fff?text=HUCKLE", 
+                        thumb: "https://placehold.co/100x100/14b8a6/fff?text=Huckle", 
+                        tags: ["Immortal", "CatLover"] 
+                    },
+                ],
+                mafia: [
+                    { 
+                        id: "xiaoyen", 
+                        name: "리 샤오옌", 
+                        quote: "저희는 그저 약한 동물들끼리 모여서 서로 돕고 지내는 것뿐인걸요?", 
+                        desc: `"보스는 너무 물러. 저런 놈들은 그냥 이빨로 물어뜯어야 정신을 차린다고!"<br><span class="text-zinc-500 text-sm font-bold">- 웨이젠</span><br><br>"조사국에서도 추적중입니다. 현재 일어나는 대부분의 사건이 흑묘회와 관련이 있더군요."<br><span class="text-zinc-500 text-sm font-bold">- 엘렌 디아즈</span>`, 
+                        img: "https://placehold.co/600x1000/9333ea/fff?text=XIAOYEN", 
+                        thumb: "https://placehold.co/100x100/9333ea/fff?text=Xiaoyen", 
+                        tags: ["Boss", "Rabbit"] 
+                    },
+                    { 
+                        id: "weijen", 
+                        name: "웨이젠", 
+                        quote: "뭐야? 싸우자는 거냐? 우리 흑묘회를 얕보면 아주 큰코다친다고!", 
+                        desc: `"근육만 찬 바보. 저런 녀석이 어떻게 간부 자리에 있는지 이해할 수가 없구나. 보스를 의심하는건 아니지만..."<br><span class="text-zinc-500 text-sm font-bold">- 뤄빙빙</span><br><br>"웨이젠은... 조금 다혈질이지만, 마음은 착한 아이랍니다. 모두를 지키고 싶어 하는 마음이 강해서 그런 거예요. 후후."<br><span class="text-zinc-500 text-sm font-bold">- 리 샤오옌</span>`, 
+                        img: "https://placehold.co/600x1000/9333ea/fff?text=WEIJEN", 
+                        thumb: "https://placehold.co/100x100/9333ea/fff?text=Weijen", 
+                        tags: ["Wolf", "Loyal"] 
+                    },
+                    { 
+                        id: "bingbing", 
+                        name: "뤄빙빙", 
+                        quote: "감히 보스의 심기를 건드린 죄, 네놈의 목숨으로 갚도록.", 
+                        desc: `"빙빙은 조금 무서운 면이 있지만, 저를 정말 아껴주는 좋은 친구예요. 가끔 그 방식이 조금 과격해서 곤란할 때도 있지만요."<br><span class="text-zinc-500 text-sm font-bold">- 웨이젠</span><br><br>"분명 실질적인 2인자라는 이야기가 많던데, 제 눈에는 그냥 한마리의 여우같은걸요?"<br><span class="text-zinc-500 text-sm font-bold">- 옌 페이</span>`, 
+                        img: "https://placehold.co/600x1000/9333ea/fff?text=BINGBING", 
+                        thumb: "https://placehold.co/100x100/9333ea/fff?text=Bingbing", 
+                        tags: ["Fox", "Yandere"] 
+                    },
+                ],
+                cult: [
+                    { 
+                        id: "heosang", 
+                        name: "허상", 
+                        quote: "짜잔~! 어때, 자기야? 내가 준비한 마술, 마음에 들어?", 
+                        desc: `"무위교? 존재하긴 하는 단체인거야? 소문대로면 테러를 일삼는 범죄조직이라던데..."<br><span class="text-zinc-500 text-sm font-bold">- 시민 1</span><br><br>"허상님은 항상 무슨 생각을 하는지 모르겠어요."<br><span class="text-zinc-500 text-sm font-bold">- 레니</span>`, 
+                        img: "https://placehold.co/600x1000/4b5563/fff?text=HEOSANG", 
+                        thumb: "https://placehold.co/100x100/4b5563/fff?text=Heosang", 
+                        tags: ["Leader", "Psycho"] 
+                    },
+                    { 
+                        id: "lenny", 
+                        name: "레니", 
+                        quote: "뭘 봐요. 치즈 먹는게 신기한가요...", 
+                        desc: `"가끔 연구소 주변에서 이상한 기척이 느껴지던데..."<br><span class="text-zinc-500 text-sm font-bold">- 제인 왓슨</span><br><br>"레니는 내 최고의 조수이자 유일한 이해자야! 쟤가 없으면 내 마술은 시작도 못 한다구. 가끔 귀찮아하는 게 흠이지만, 그래도 날 배신하지는 않으니까!"<br><span class="text-zinc-500 text-sm font-bold">- 허상</span>`, 
+                        img: "https://placehold.co/600x1000/4b5563/fff?text=LENNY", 
+                        thumb: "https://placehold.co/100x100/4b5563/fff?text=Lenny", 
+                        tags: ["Portal", "Mouse"] 
+                    },
+                    { 
+                        id: "n", 
+                        name: "엔", 
+                        quote: "저는 그저... 흐름에 몸을 맡길 뿐입니다.", 
+                        desc: `"최근 도시에서 활동하는 다이버라... 그녀의 팔은 매우 흥미롭더군요."<br><span class="text-zinc-500 text-sm font-bold">- 잭 더 리퍼</span><br><br>"엔? 아~ 가끔 일 도와주는 착한 애. 재미는 없지만 실력은 확실하거든. 걔 팔, 되게 신기하지 않아? 내 마술과는 다른 종류의 예술이야."<br><span class="text-zinc-500 text-sm font-bold">- 허상</span>`, 
+                        img: "https://placehold.co/600x1000/4b5563/fff?text=N", 
+                        thumb: "https://placehold.co/100x100/4b5563/fff?text=N", 
+                        tags: ["Weapon", "Nihil"] 
+                    },
+                ],
+                free: [
+                    { 
+                        id: "frey", 
+                        name: "프레이", 
+                        quote: "안전하게 가려면 내 지시를 따라줘.", 
+                        desc: `"내 동생은 너무 깐깐하다니까! 인생 좀 즐기면서 살면 어디 덧나나? 그래도 녀석의 길 안내는 동백림 최고라고!"<br><span class="text-zinc-500 text-sm font-bold">- 프레이야 스미르노바</span><br><br>"특히 동생 쪽은 절대 실수를 용납하지 않아요. 그만큼 비싸지만, 목숨값이라 생각하면 싼 편이랍니다."<br><span class="text-zinc-500 text-sm font-bold">- 로르텔 루드밀라</span>`, 
+                        img: "https://placehold.co/600x1000/eab308/fff?text=FREY", 
+                        thumb: "https://placehold.co/100x100/eab308/fff?text=Frey", 
+                        tags: ["Guide", "Twin"] 
+                    },
+                    { 
+                        id: "freya", 
+                        name: "프레이야", 
+                        quote: "안전은 무슨, 그냥 다 때려부수고 나가면 되는거 아냐?", 
+                        desc: `"...누나는 언제나 저런 식이야. 내가 전투를 못해서 대신 하는거지만 가끔 무섭다니까."<br><span class="text-zinc-500 text-sm font-bold">- 프레이 스미르노프</span><br><br>"프레이야 님! 정말 멋있어요! 제 방송에 한번 출연해 주시면 안 될까요?"<br><span class="text-zinc-500 text-sm font-bold">- 우사미야 다이아</span>`, 
+                        img: "https://placehold.co/600x1000/eab308/fff?text=FREYA", 
+                        thumb: "https://placehold.co/100x100/eab308/fff?text=Freya", 
+                        tags: ["Scythe", "Twin"] 
+                    },
+                    { 
+                        id: "jack", 
+                        name: "잭 더 리퍼", 
+                        quote: "아름다운 밤입니다. 당신이라는 작품 또한... 매우 흥미로운 구조를 하고 있군요. 괜찮으시다면, 잠시 해부를 허락해 주시겠습니까?", 
+                        desc: `"밤안개 속의 예술가라... 그의 소문은 익히 들었습니다. 그의 암기는 빠르고 정확하지만, 불필요한 미학에 집착하는 경향이 있더군요. 실전에서는 치명적인 단점입니다."<br><span class="text-zinc-500 text-sm font-bold">- 최부장</span><br><br>"잭! 걔도 예술가라니까! 나랑은 장르가 좀 다르지만, 괴이를 분해해서 전시하는 그 센스! 마음에 들어."<br><span class="text-zinc-500 text-sm font-bold">- 허상</span>`, 
+                        img: "https://placehold.co/600x1000/eab308/fff?text=JACK", 
+                        thumb: "https://placehold.co/100x100/eab308/fff?text=Jack", 
+                        tags: ["Killer", "Art"] 
+                    },
+                    { 
+                        id: "teresa", 
+                        name: "테레사 & 메루루", 
+                        quote: "히익! 저리가세요! / 울지 말라고 했을 텐데, 이 얼간이 계집!", 
+                        desc: `"메루루!살아있는에고소드라니!심지어사라진줄알았던최초의6인중하나!오오나의지적호기심이끓어오르는군!그녀의본질은단순한괴이인가아니면완전히새로운존재인가!"<br><span class="text-zinc-500 text-sm font-bold">- 셜록 홈스테인</span><br><br>"테레사? 걔, 엄청 울보잖아. 근데 재능만큼은 진짜배기야. 언젠가 나를 뛰어넘을지도 모른다고 생각하면... 좀 짜증 나지."<br><span class="text-zinc-500 text-sm font-bold">- 클로이 피랄리스</span>`, 
+                        img: "https://placehold.co/600x1000/eab308/fff?text=TERESA", 
+                        thumb: "https://placehold.co/100x100/eab308/fff?text=Teresa", 
+                        tags: ["Crybaby", "EgoSword"] 
+                    },
+                    { 
+                        id: "chloe", 
+                        name: "클로이 피랄리스", 
+                        quote: "나를 고양이라고 부르지 마! 귀엽다고도 하지마! 알았어?!", 
+                        desc: `"저 백호 아가씨, 성깔 한번 대단하더군. 귀엽다고 했다가 죽을 뻔했지 뭐야. 뭐, 그 반응이 또 귀엽지만 말이야. 하하하!"<br><span class="text-zinc-500 text-sm font-bold">- 전우치</span><br><br>"클로이 님, 정말 멋있어요! 백호 수인이라니, 너무 희귀하고... 아, 아니, 멋지고 강하시다고요! 화내지 마세요!"<br><span class="text-zinc-500 text-sm font-bold">- 우사미야 다이아</span>`, 
+                        img: "https://placehold.co/600x1000/eab308/fff?text=CHLOE", 
+                        thumb: "https://placehold.co/100x100/eab308/fff?text=Chloe", 
+                        tags: ["Tiger", "Claw"] 
+                    },
+                    { 
+                        id: "woochi", 
+                        name: "전우치", 
+                        quote: "하하하! 뭘 그리 놀라나! 구름을 부르고 바람을 일으키는 이 몸이 바로 도사 전우치다!", 
+                        desc: `"두목은 언제나 허풍이 심하니라."<br><span class="text-zinc-500 text-sm font-bold">- 타마모</span><br><br>"전우치? 아, 그 사기꾼 같은 사람이요? 실력은 진짜라던데, 만날 때마다 약 파는 것 같아서 영…"<br><span class="text-zinc-500 text-sm font-bold">- 윤필립</span>`, 
+                        img: "https://placehold.co/600x1000/eab308/fff?text=WOOCHI", 
+                        thumb: "https://placehold.co/100x100/eab308/fff?text=Woochi", 
+                        tags: ["Taoist", "Tech"] 
+                    },
+                    { 
+                        id: "tamamo", 
+                        name: "타마모", 
+                        quote: "진실을 알려줄 수도 있으나... 세상만사를 다 아는 것은 재미가 없는 법이니라.", 
+                        desc: `"타마모는 내 최고의 조수지! 저 녀석이 없으면 내 도술도 완성되지 않는다고! 가끔 내 말을 안 믿는 게 흠이지만 말이야."<br><span class="text-zinc-500 text-sm font-bold">- 전우치</span><br><br>"저 여우... 평범한 수인이 아니군요. 아주 오래된 존재의 향기가 납니다. 저런 존재가 어째서 저런 사기꾼 밑에 있는 걸까요?"<br><span class="text-zinc-500 text-sm font-bold">- 허클베리 폰</span>`, 
+                        img: "https://placehold.co/600x1000/eab308/fff?text=TAMAMO", 
+                        thumb: "https://placehold.co/100x100/eab308/fff?text=Tamamo", 
+                        tags: ["Fox", "Liar"] 
+                    },
+                    { 
+                        id: "dia", 
+                        name: "우사미야 다이아", 
+                        quote: "라이브! 지금 시작합니다!", 
+                        desc: `"저 꼬맹이, 겁도 없이 안에서 방송을 하잖아? 그러다 언제 한번 큰일 날 거라고 생각하는데... 뭐, 알아서 하겠지."<br><span class="text-zinc-500 text-sm font-bold">- 클로이 피랄리스</span><br><br>"다이아? 아~ 그 배달부 꼬마! 가끔 심예 안에서 마주치는데, 엄청 씩씩하더라고! 다음에 만나면 간식이라도 줘야겠어."<br><span class="text-zinc-500 text-sm font-bold">- 프레이야 스미르노바</span>`, 
+                        img: "https://placehold.co/600x1000/eab308/fff?text=DIA", 
+                        thumb: "https://placehold.co/100x100/eab308/fff?text=Dia", 
+                        tags: ["Idol", "Rabbit"] 
+                    },
+                ],
+            };
+// Current State
+            let currentFactionId = "city";
+            let currentCharacterId = characters["city"][0].id;
+
+            // --- 3. FUNCTIONS ---
+
+            function scrollSlider(direction) {
+                const slider = document.getElementById("worldview-slider");
+                const scrollAmount = 350;
+                if (direction === 1) {
+                    slider.scrollLeft += scrollAmount;
+                } else {
+                    slider.scrollLeft -= scrollAmount;
+                }
+            }
+
+            function openCharacterModal() {
+                document.getElementById("character-modal").classList.remove("hidden");
+                renderFactionSidebar();
+                selectFaction(currentFactionId);
+            }
+
+            function closeCharacterModal() {
+                document.getElementById("character-modal").classList.add("hidden");
+            }
+
+            // 🔶 수정된 부분: 사이드바 버튼 생성 로직 (크고 확실한 카드형 디자인)
+            function renderFactionSidebar() {
+                const sidebar = document.getElementById("faction-sidebar");
+                sidebar.innerHTML = "";
+                factions.forEach((faction) => {
+                    const btn = document.createElement("button");
+                    const isActive = faction.id === currentFactionId;
+                    
+                    // 스타일 변경: 너비를 꽉 채우고(w-full), 패딩을 키우고(py-4), 테두리와 배경색을 강화
+                    btn.className = `w-full py-4 px-2 rounded-xl flex flex-col items-center justify-center transition-all duration-300 hover:bg-white/10 group ${isActive ? 'bg-white/20 border-4 border-zzz-lime shadow-[0_0_15px_#d946ef] scale-105' : 'border-2 border-zinc-700 opacity-70 hover:opacity-100 hover:border-white'}`;
+                    
+                    // 내용 변경: 이미지 크기 대폭 확대 (w-24 h-24), 텍스트 크기 및 굵기 확대 (text-lg font-black)
+                    btn.innerHTML = `
+                        <img src="${faction.icon}" class="w-24 h-24 object-contain mb-2 drop-shadow-lg group-hover:scale-110 transition-transform">
+                        <span class="text-lg font-black text-white text-center leading-tight font-eng tracking-wider uppercase drop-shadow-md">${faction.name}</span>
+                    `;
+                    
+                    btn.onclick = () => selectFaction(faction.id);
+                    sidebar.appendChild(btn);
+                });
+            }
+
+            function selectFaction(factionId) {
+                currentFactionId = factionId;
+                renderFactionSidebar();
+
+                const thumbContainer = document.getElementById("char-thumbnails");
+                thumbContainer.innerHTML = "";
+
+                const charList = characters[factionId];
+                if (!charList) return;
+
+                charList.forEach((char, index) => {
+                    const thumbBtn = document.createElement("div");
+                    const isSelected = char.id === currentCharacterId;
+                    thumbBtn.className = `cursor-pointer relative group flex-shrink-0 transition-transform hover:-translate-y-1`;
+                    thumbBtn.onclick = () => renderCharacterInfo(char);
+
+                    const borderColor = isSelected ? "border-zzz-lime" : "border-zinc-600";
+
+                    // 썸네일 박스 크기 증가 (w-32 h-32 md:w-40 md:h-40)
+                    thumbBtn.innerHTML = `
+                    <div class="thumb-box w-32 h-32 md:w-40 md:h-40 bg-black border-2 ${borderColor} overflow-hidden skew-box group-hover:border-zzz-lime transition-colors">
+                        <img src="${char.thumb}" class="w-full h-full object-cover un-skew opacity-70 group-hover:opacity-100 transition-opacity">
+                    </div>
+                    <div class="absolute bottom-0 left-0 w-full bg-black/80 text-white text-[10px] text-center font-bold skew-box un-skew">
+                        ${char.name}
+                    </div>
+                `;
+                    thumbContainer.appendChild(thumbBtn);
+                });
+
+                const isCharInFaction = charList.find((c) => c.id === currentCharacterId);
+                if (!isCharInFaction && charList.length > 0) {
+                    renderCharacterInfo(charList[0]);
+                } else if (isCharInFaction) {
+                    renderCharacterInfo(isCharInFaction);
+                }
+            }
+
+            function renderCharacterInfo(char) {
+                currentCharacterId = char.id;
+
+                const nameEl = document.getElementById("char-name");
+                const descEl = document.getElementById("char-desc");
+                const imgEl = document.getElementById("char-art");
+                const tagsContainer = document.getElementById("char-tags");
+
+                imgEl.style.opacity = "0";
+                imgEl.style.transform = "translateY(20px)";
+
+                setTimeout(() => {
+                    nameEl.innerText = char.name;
+                    document.getElementById("char-quote").innerText = char.quote;
+                    
+                    // ▼ 수정된 부분: innerHTML로 변경하여 태그 적용
+                    descEl.innerHTML = char.desc;
+
+                    imgEl.src = char.img;
+
+                    tagsContainer.innerHTML = "";
+                    char.tags.forEach((tag) => {
+                        const span = document.createElement("span");
+                        span.className = "px-2 py-1 bg-zinc-800 text-zzz-lime text-xs font-bold border border-zinc-600";
+                        span.innerText = `#${tag}`;
+                        tagsContainer.appendChild(span);
+                    });
+
+                    imgEl.style.opacity = "1";
+                    imgEl.style.transform = "translateY(0)";
+
+                    const thumbContainer = document.getElementById("char-thumbnails");
+                    Array.from(thumbContainer.children).forEach((btn, idx) => {
+                        const box = btn.querySelector(".thumb-box");
+                        const targetChar = characters[currentFactionId][idx];
+                        if (targetChar.id === char.id) {
+                            box.classList.remove("border-zinc-600");
+                            box.classList.add("border-zzz-lime");
+                        } else {
+                            box.classList.add("border-zinc-600");
+                            box.classList.remove("border-zzz-lime");
+                        }
+                    });
+                }, 100);
+            }
+        </script>
+    </body>
+</html>
